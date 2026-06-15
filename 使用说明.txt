@@ -1,0 +1,15 @@
+帧相 V8 布局修正版
+
+这版重点修复：所有章节的左侧叙事文字与右侧图表分区显示，避免文字、图表、标签互相遮挡；保留胶片主题色和放映厅视觉。
+
+运行方式：双击 start_site.bat，或在文件夹运行 python -m http.server 8000 后访问 http://localhost:8000/index.html
+
+不要直接双击 index.html。
+请双击 start_site.bat，然后浏览器访问：
+http://localhost:8000/index.html
+
+本版改动：
+1. 图表主题色统一为胶片色系：胶片金、琥珀橙、青绿冷光、暗场棕。
+2. Chart1、Chart2、Chart3、Chart4、Bubble 的图例和数据元素同步换色。
+3. 标签增加浅胶片底色，减少和底图混在一起。
+4. Three.js 灯光改成暖色放映光 + 青绿边缘光。
