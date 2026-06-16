@@ -104,6 +104,122 @@ body.page2 #poster-stat{font-size:clamp(34px,4vw,52px)!important;}
   #poster-stat{font-size:48px!important;}
 }
 
+.page-arrow{position:fixed;top:50%;transform:translateY(-50%);z-index:26;width:44px;height:76px;border:1px solid rgba(245,193,108,.26);background:rgba(8,6,4,.38);color:rgba(245,193,108,.82);font-size:28px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(10px);transition:opacity .22s,background .22s,color .22s,transform .22s;pointer-events:auto}
+.page-arrow:hover{background:rgba(245,193,108,.16);color:#f8edda;transform:translateY(-50%) scale(1.04)}
+.page-arrow.disabled{opacity:.22;cursor:default;pointer-events:none}
+#page-prev{left:22px}#page-next{right:22px}
+body.page6 .story-panel{max-width:470px!important;width:min(470px,38vw)!important}
+body.page6 #poster-title{max-width:460px!important}
+body.page6 #poster-stat{font-size:clamp(34px,4.2vw,56px)!important;letter-spacing:.02em}
+body.page6 .chapter-quote{max-width:520px!important}
+@media(max-width:760px){.page-arrow{width:38px;height:62px;font-size:24px}#page-prev{left:8px}#page-next{right:8px}}
+
+body.page6 #frame-spot{
+  background:#050505!important;
+  border-color:rgba(245,193,108,.28)!important;
+  box-shadow:0 0 0 16px rgba(0,0,0,.72),0 0 90px rgba(0,0,0,.98),0 0 130px rgba(245,193,108,.16)!important;
+}
+body.page6 #frame-spot::before{
+  inset:0!important;
+  border:none!important;
+  background:repeating-linear-gradient(90deg,transparent 0 34px,rgba(245,193,108,.11) 35px 42px,transparent 43px 82px),radial-gradient(circle at 50% 50%,rgba(245,193,108,.15),transparent 40%)!important;
+  box-shadow:none!important;
+  opacity:.48!important;
+  animation:reelMove 12s linear infinite;
+}
+body.page6 #frame-spot::after{
+  background:linear-gradient(14deg,rgba(245,193,108,.20),rgba(245,193,108,.055) 46%,transparent 74%),repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 5px)!important;
+  clip-path:polygon(0 36%,78% 0,100% 100%,0 66%);
+  mix-blend-mode:screen!important;
+  opacity:.82!important;
+}
+body.page6 #poster{justify-content:center!important;align-items:flex-start!important;text-align:center!important;padding:34px 42px 120px!important}
+body.page6 .story-panel{width:min(760px,70vw)!important;max-width:760px!important;min-height:auto!important;text-shadow:0 0 18px rgba(245,193,108,.18)!important}
+body.page6 #poster-chapter{color:rgba(245,193,108,.68)!important;letter-spacing:7px!important}
+body.page6 #poster-title{max-width:760px!important;color:#f8edda!important;font-size:clamp(42px,6.1vw,72px)!important;letter-spacing:.10em!important;margin-right:-.10em!important}
+body.page6 #poster-title::after{margin-left:auto!important;margin-right:auto!important;width:120px!important;background:linear-gradient(90deg,transparent,var(--gold),transparent)!important}
+body.page6 #poster-sub,body.page6 #poster-stat,body.page6 #poster-stat-label,body.page6 #poster-desc{display:none!important}
+body.page6 #poster-stat{display:none!important}
+body.page6 .chapter-quote{left:50%!important;bottom:78px!important;transform:translateX(-50%)!important;max-width:620px!important;color:rgba(247,239,224,.72)!important;text-align:center!important}
+body.page6 .chapter-quote span{color:#f5c16c!important}
+body.page6 .act-mark{right:88px!important;top:70px!important;color:rgba(245,193,108,.08)!important;opacity:1!important}
+body.page6 #legend{display:none!important}
+
+/* clean cinematic end page */
+body.page6 #frame-spot{
+  background:#050505!important;
+  border-color:rgba(245,193,108,.22)!important;
+  box-shadow:0 0 0 16px rgba(0,0,0,.72),0 0 90px rgba(0,0,0,.98),0 0 120px rgba(245,193,108,.14)!important;
+}
+body.page6 #frame-spot::before{
+  inset:0!important;
+  border:none!important;
+  background:radial-gradient(circle at 50% 42%,rgba(245,193,108,.13),transparent 36%),repeating-linear-gradient(90deg,transparent 0 56px,rgba(245,193,108,.055) 57px 61px,transparent 62px 118px)!important;
+  box-shadow:none!important;
+  opacity:.58!important;
+  animation:reelMove 16s linear infinite;
+}
+body.page6 #frame-spot::after{
+  background:linear-gradient(14deg,rgba(245,193,108,.16),rgba(245,193,108,.045) 42%,transparent 72%),repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 5px)!important;
+  clip-path:polygon(0 35%,78% 0,100% 100%,0 67%);
+  mix-blend-mode:screen!important;
+  opacity:.78!important;
+}
+body.page6 #poster{
+  justify-content:center!important;
+  align-items:flex-start!important;
+  text-align:center!important;
+  padding:58px 42px 118px!important;
+}
+body.page6 .story-panel{
+  width:min(760px,70vw)!important;
+  max-width:760px!important;
+  min-height:auto!important;
+  text-shadow:0 0 18px rgba(245,193,108,.18)!important;
+}
+body.page6 #poster-chapter{
+  color:rgba(245,193,108,.70)!important;
+  letter-spacing:8px!important;
+  font-size:11px!important;
+}
+body.page6 #poster-title{
+  max-width:760px!important;
+  color:#f8edda!important;
+  font-size:clamp(86px,13vw,156px)!important;
+  line-height:.92!important;
+  letter-spacing:.22em!important;
+  margin-right:-.22em!important;
+  margin-top:28px!important;
+  text-shadow:0 0 18px rgba(245,193,108,.30),0 24px 80px rgba(0,0,0,.8)!important;
+}
+body.page6 #poster-title::after{
+  margin:32px auto 0!important;
+  width:150px!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)!important;
+}
+body.page6 #poster-sub,
+body.page6 #poster-stat,
+body.page6 #poster-stat-label,
+body.page6 #poster-desc{display:none!important}
+body.page6 .chapter-quote{
+  left:50%!important;
+  bottom:54px!important;
+  transform:translateX(-50%)!important;
+  max-width:620px!important;
+  color:rgba(247,239,224,.74)!important;
+  text-align:center!important;
+  font-size:18px!important;
+}
+body.page6 .chapter-quote span{color:#f5c16c!important}
+body.page6 .act-mark{
+  right:90px!important;
+  top:76px!important;
+  color:rgba(245,193,108,.075)!important;
+  opacity:1!important;
+}
+body.page6 #legend{display:none!important}
+
 </style>
 </head>
 <body>
@@ -156,6 +272,8 @@ body.page2 #poster-stat{font-size:clamp(34px,4vw,52px)!important;}
   <div id="film-nodes"></div>
 </div>
 <div class="film-progress" id="film-progress"></div>
+<button class="page-arrow" id="page-prev" aria-label="上一页">‹</button>
+<button class="page-arrow" id="page-next" aria-label="下一页">›</button>
 <div id="legend"></div>
 <div id="overlay"></div>
 <div class="shutter" id="shutter"></div>
@@ -183,7 +301,8 @@ const NODES = [
   { id:'chart2', label:'突然熄灭', ico:'🕯️', chapter:'02', title:'突然熄灭：电影院被按下暂停键', sub:'2020—2022｜疫情让市场结构发生断层', stat:'0.45→0.61→0.79', statLabel:'疫情前→疫情期→后疫情 CR10', desc:'疫情没有只改变票房数字，它改变了谁能留下：中腰部影片变得脆弱，头部影片变得更亮，也更孤独。', quote:'银幕还在，<span>但座位暗了下去。</span>', file:'chart2', statClass:'stat-sm' },
   { id:'chart3', label:'新的英雄', ico:'🚀', chapter:'03', title:'新的英雄：想象力以脉冲出现', sub:'国产科幻 / 奇幻的爆款式跃迁', stat:'32.5%', statLabel:'2025 科幻/奇幻占比峰值', desc:'科幻与奇幻并没有稳定增长，而像放映机里突然亮起的强光：哪吒、流浪地球、独行月球，每次爆发都短促但耀眼。', quote:'中国电影开始讲自己的神话，<span>也开始想象自己的宇宙。</span>', file:'chart3' },
   { id:'chart4', label:'寻找自己', ico:'🎚️', chapter:'04', title:'寻找自己：票房与口碑开始离焦', sub:'票房占比 × 豆瓣评分｜聚焦、过曝与离焦', stat:'4.7~8.8', statLabel:'年度前20评分跨度', desc:'2018—2025年，中国电影市场逐渐从"内容驱动"转向"内容+传播驱动"。头部影片票房占比持续提升，但评分区间却从4.7延伸至8.8。高票房不再意味着高口碑，观众偏好正在加速分层。中国电影进入多元价值并存的新阶段。', quote:'电影不再只是逃离现实，<span>而是在重新理解现实。</span>', file:'chart4' },
-  { id:'bubble', label:'下一帧', ico:'🌌', chapter:'05', title:'下一帧：进入中国电影宇宙', sub:'80部代表影片｜自由探索与手势交互', stat:'604部', statLabel:'全量数据样本', desc:'最后一幕不是结论，而是把观众交还给星空。每颗光点都是一部电影，也是一段被时代点亮的情绪。', quote:'从《红海行动》到《热辣滚烫》，变化的不只是票房，<span>是观众看待世界的方式。</span>', file:'bubble' }
+  { id:'bubble', label:'下一帧', ico:'🌌', chapter:'05', title:'下一帧：进入中国电影宇宙', sub:'80部代表影片｜自由探索与手势交互', stat:'604部', statLabel:'全量数据样本', desc:'最后一幕不是结论，而是把观众交还给星空。每颗光点都是一部电影，也是一段被时代点亮的情绪。', quote:'从《红海行动》到《热辣滚烫》，变化的不只是票房，<span>是观众看待世界的方式。</span>', file:'bubble' },
+  { id:'end', label:'片尾余光', ico:'🎬', chapter:'06', title:'帧相', sub:'片尾余光', stat:'', statLabel:'', desc:'数据来自猫眼专业版、灯塔专业版 App 与豆瓣电影。样本按年度计算单片票房占比，并剔除低于 0.1% 的影片，聚焦主流及头部影片的结构变化。', quote:'下一帧仍在放映，<span>下一次观看已经开始。</span>', file:'end' }
 ];
 
 let current=0, transitioning=false, rollAnim=null;
@@ -194,6 +313,8 @@ const overlay=document.getElementById('overlay');
 const shutter=document.getElementById('shutter');
 const progress=document.getElementById('film-progress');
 const elLegend=document.getElementById('legend');
+const pagePrev=document.getElementById('page-prev');
+const pageNext=document.getElementById('page-next');
 
 function makeSprockets(){
   document.querySelectorAll('.sprockets').forEach(side=>{
@@ -212,17 +333,19 @@ addPath('M45,162 Q600,82 1155,162','rgba(245,193,108,.18)',44,.8);
 addPath('M45,162 Q600,82 1155,162','rgba(11,11,11,.96)',34,1);
 addPath('M45,162 Q600,82 1155,162','rgba(245,193,108,.72)',2,.65,'10 18');
 for(let i=0;i<54;i++){const t=i/53,pos=bezier(t);const hole=document.createElementNS(ns,'rect');hole.setAttribute('x',pos.x-3.5);hole.setAttribute('y',pos.y-20);hole.setAttribute('width','7');hole.setAttribute('height','10');hole.setAttribute('rx','1.5');hole.setAttribute('fill','rgba(242,234,220,.82)');hole.setAttribute('opacity',i%2?'.55':'.78');svg.appendChild(hole)}
-const NODE_T=[0,.25,.5,.75,1];
+const NODE_T=Array.from({length:NODES.length},(_,i)=>NODES.length===1?0:i/(NODES.length-1));
 NODE_T.forEach((t,i)=>{
   const pos=bezier(t),pX=pos.x/1200*100,pY=pos.y/210*100;
   const dot=document.createElement('div');dot.className='film-node'+(i===0?' active':'');dot.dataset.index=i;
   dot.style.cssText=`left:calc(${pX}% - 13px);top:calc(${pY}% - 13px);width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#fff 0 12%,#f5c16c 14% 46%,#8a3d14 74%);box-shadow:0 0 0 5px rgba(245,193,108,.10),0 0 24px rgba(245,193,108,.28);transition:transform .35s,box-shadow .35s,filter .35s`;
   dot.addEventListener('click',()=>goTo(i));dot.addEventListener('mouseenter',()=>dot.style.filter='brightness(1.28)');dot.addEventListener('mouseleave',()=>dot.style.filter='');nodesEl.appendChild(dot);
-  const lb=document.createElement('div');lb.className='film-label';lb.style.left=`${pX}%`;lb.style.top=`calc(${pY}% + ${[8,14,20,14,8][i]}px)`;lb.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b>${NODES[i].label}`;nodesEl.appendChild(lb);
+  const lb=document.createElement('div');lb.className='film-label';lb.style.left=`${pX}%`;lb.style.top=`calc(${pY}% + ${([8,12,18,18,12,8][i] ?? 12)}px)`;lb.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b>${NODES[i].label}`;nodesEl.appendChild(lb);
 });
 function updateReel(i){
   nodesEl.querySelectorAll('.film-node').forEach((n,j)=>{n.classList.toggle('active',j===i);n.style.transform=j===i?'scale(1.34) translateY(-2px)':j<i?'scale(.86)':'scale(1)';n.style.boxShadow=j===i?'0 0 0 7px rgba(245,193,108,.16),0 0 34px rgba(245,193,108,.68)':j<i?'0 0 0 3px rgba(245,193,108,.06),0 0 8px rgba(245,193,108,.14)':'0 0 0 5px rgba(245,193,108,.10),0 0 24px rgba(245,193,108,.28)'});
   progress.style.width=`${(i/(NODES.length-1))*100}%`;
+  pagePrev.classList.toggle('disabled',i===0);
+  pageNext.classList.toggle('disabled',i===NODES.length-1);
 }
 function rollNumber(s,el,d=850){
   if(rollAnim){cancelAnimationFrame(rollAnim);rollAnim=null}
@@ -263,7 +386,8 @@ async function goTo(i){
   await new Promise(r=>setTimeout(r,140));
   overlay.classList.remove('active');shutter.classList.remove('active');transitioning=false;
 }
-for(const n of NODES){try{loadedModules.push(await import(`./experiments/${n.file}.js`))}catch(e){console.error(`Failed ${n.file}:`,e);loadedModules.push({})}}
+const MODULE_VERSION='end-centered1';
+for(const n of NODES){try{loadedModules.push(await import(`./experiments/${n.file}.js?v=${MODULE_VERSION}`))}catch(e){console.error(`Failed ${n.file}:`,e);loadedModules.push({})}}
 let experienceStarted=false;
 function startExperience(){
   if(experienceStarted)return;
@@ -276,10 +400,12 @@ function startExperience(){
   updateLegend(0);
 }
 window.__FRAME_START_APP__=startExperience;
+pagePrev.addEventListener('click',()=>goTo(current-1));
+pageNext.addEventListener('click',()=>goTo(current+1));
 document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')goTo(current-1);if(e.key==='ArrowRight')goTo(current+1);if(e.key==='Enter')startExperience()});
 document.getElementById('cover-btn').addEventListener('click',startExperience);
 if(window.__FRAME_CLICKED__) startExperience();
-function animate(t){requestAnimationFrame(animate);controls.update();loadedModules[current]?.animate?.(t);renderer.render(scene,camera);labelRenderer.render(scene,camera)}
+function animate(t){requestAnimationFrame(animate);controls.update();loadedModules[current]?.animate?.(t);renderer.render(scene,camera);labelRenderer.render(scene,camera);window.__resolveLabelCollisions?.()}
 animate();
 </script>
 </body>

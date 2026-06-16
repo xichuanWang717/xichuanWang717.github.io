@@ -51,7 +51,7 @@ function init(scene, camera, controls) {
   group.add(makeLabel('评分', 11, ox + pw + 24, oy + ph / 2, 5, '#8a8175'));
 
   // Annotation + leader line (always visible)
-  group.add(makeLabel('2025年 CR5/CR10 = 0.828', 12, mx(7), myV(0.828) + 40, 5, '#7a3b12'));
+  group.add(makeLabel('2025年 CR5/CR10 = 0.828', 12, mx(7), myV(0.828) + 50, 5, '#7a3b12'));
   const ldr = new THREE.Line(
     new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(mx(7), myV(0.828), 5), new THREE.Vector3(mx(7), myV(0.828) + 28, 5)]),
     new THREE.LineBasicMaterial({ color: 0xf5c16c, opacity: 0.3, transparent: true })

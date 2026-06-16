@@ -36,9 +36,10 @@ function init(scene, camera, controls, renderer) {
   const maxShare = Math.max(...movies.map(m => m.s));
   const maxRating = Math.max(...movies.map(m => m.rt));
   const minRating = Math.min(...movies.map(m => m.rt));
-  const xMax = Math.ceil(maxShare * 100) / 100; // round up to 2 decimals
-  const yMin = Math.floor(minRating);
-  const yMax = Math.ceil(maxRating);
+  const xTickMax = Math.ceil(maxShare * 100) / 100;
+  const xMax = xTickMax * 1.12; // keep the highest-share bubble inside the frame
+  const yMin = Math.floor(minRating) - 0.2;
+  const yMax = Math.ceil(maxRating) + 0.2;
 
   const w = 950, h = 380;
   const padL = 60, padR = 30, padT = 50, padB = 60;
@@ -50,7 +51,7 @@ function init(scene, camera, controls, renderer) {
   // X grid (5 ticks)
   const gm = new THREE.LineBasicMaterial({ color: 0x2b2118, transparent: true, opacity: 0.18 });
   for (let i = 0; i <= 4; i++) {
-    const v = (xMax / 4) * i;
+    const v = (xTickMax / 4) * i;
     const x = mx(v);
     const g = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x, oy, 0), new THREE.Vector3(x, oy + ph, 0)]);
     group.add(new THREE.Line(g, gm));
@@ -78,23 +79,33 @@ function init(scene, camera, controls, renderer) {
   group.add(new THREE.Line(vg, ml));
   const hg = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(ox, my(mr), 0), new THREE.Vector3(ox + pw, my(mr), 0)]);
   group.add(new THREE.Line(hg, ml));
-  group.add(makeLabel('高票房·低评分', 10, ox + pw - 100, oy + 30, 3, '#8a8175'));
-  group.add(makeLabel('低票房·高评分', 10, ox + 100, oy + ph - 30, 3, '#8a8175'));
+  group.add(makeLabel('高票房·低评分', 10, ox + pw + 20, oy + 24, 3, '#8a8175', 'left'));
+  group.add(makeLabel('低票房·高评分', 10, ox + 42, oy + ph + 24, 3, '#8a8175', 'left'));
 
   // Scatter dots — each gets a movie name stored
   movies.forEach((m, i) => {
     const col = GC[m.g] || 0x666;
     const x = mx(m.s), y = my(m.rt);
-    const sz = Math.max(3, m.s * 60);
+    const isKey = m.n === '哪吒之魔童闹海';
+    const sz = Math.max(4.2, m.s * 58);
     const dot = new THREE.Mesh(
-      new THREE.SphereGeometry(sz, 8, 8),
+      new THREE.SphereGeometry(sz, isKey ? 24 : 12, isKey ? 16 : 10),
       new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0 })
     );
-    dot.position.set(x, y, 0);
+    dot.position.set(x, y, isKey ? 8 : 1);
     dot.userData = { movie: m, idx: i, delay: i * 15, sz };
     dot.visible = false;
     group.add(dot);
     dots.push(dot);
+    if (isKey) {
+      const ring = new THREE.Mesh(
+        new THREE.RingGeometry(sz + 5, sz + 7, 64),
+        new THREE.MeshBasicMaterial({ color: 0x4ecdc4, transparent: true, opacity: 0.62, side: THREE.DoubleSide })
+      );
+      ring.position.set(x, y, 7);
+      group.add(ring);
+      group.add(makeLabel('哪吒之魔童闹海 29.8% · 评分8.4', 11, x - 22, y + sz + 22, 8, '#27615d'));
+    }
   });
 
   // Hover label (CSS2D)
@@ -162,7 +173,7 @@ function animate(t) {
     d.visible = true;
     const progress = Math.min(localT / 400, 1);
     const ease = 1 - Math.pow(1 - progress, 3);
-    d.material.opacity = ease * 0.6;
+    d.material.opacity = ease * (d.userData.movie.n === '哪吒之魔童闹海' ? 0.92 : 0.78);
     // Zoom effect: scale from 0.3 to 1.0
     d.scale.setScalar(0.3 + ease * 0.7);
   });

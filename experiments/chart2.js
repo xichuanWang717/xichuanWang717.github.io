@@ -74,11 +74,13 @@ function init(scene, camera, controls) {
 
     group.add(makeLabel(p.label, 15, cx, baseY - 38, 5, '#1b130a'));
     group.add(makeLabel(p.sub, 11, cx, baseY - 62, 5, '#6d5c49'));
-    group.add(makeLabel(`CR10 = ${p.cr.toFixed(2)}`, 16, cx, baseY + beamH + 32, 5, '#1b130a'));
-    group.add(makeLabel(p.line, 11, cx, baseY + beamH + 60, 5, '#6d5c49'));
+    const crY = baseY + beamH + 32;
+    const lineY = crY + 28 + pi * 4;
+    group.add(makeLabel(`CR10 = ${p.cr.toFixed(2)}`, 16, cx, crY, 5, '#1b130a'));
+    group.add(makeLabel(p.line, 11, cx, lineY, 5, '#6d5c49'));
   });
 
-  group.add(makeLabel('放映厅断层扫描：空座越多，市场越脆弱；光束越窄，头部越集中', 13, 0, 210, 5, '#6d5c49'));
+  group.add(makeLabel('放映厅断层扫描：空座越多，市场越脆弱；光束越窄，头部越集中', 13, 30, 292, 5, '#6d5c49'));
   camera.position.set(0, 40, 690);
   camera.lookAt(0, 0, 0);
 }
