@@ -220,9 +220,47 @@ body.page6 .act-mark{
 }
 body.page6 #legend{display:none!important}
 
+.music-toggle{
+  position:fixed;
+  top:22px;
+  right:24px;
+  z-index:58;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:1px solid rgba(245,193,108,.36);
+  background:rgba(8,6,4,.52);
+  color:#f5c16c;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  pointer-events:auto;
+  backdrop-filter:blur(12px);
+  box-shadow:0 12px 36px rgba(0,0,0,.34),0 0 18px rgba(245,193,108,.10);
+  transition:background .22s,color .22s,border-color .22s,transform .22s,opacity .22s;
+}
+.music-toggle:hover{background:rgba(245,193,108,.16);color:#f8edda;transform:scale(1.04)}
+.music-toggle .music-note{font-size:20px;line-height:1;transform-origin:center center}
+.music-toggle.playing .music-note{animation:musicSpin 3.2s linear infinite}
+.music-toggle.muted{opacity:.62;color:rgba(247,239,224,.58)}
+.music-toggle.muted::after{
+  content:"";
+  position:absolute;
+  width:28px;
+  height:1.5px;
+  background:rgba(247,239,224,.70);
+  transform:rotate(-42deg);
+  border-radius:999px;
+}
+@keyframes musicSpin{to{transform:rotate(360deg)}}
+@media(max-width:760px){.music-toggle{top:14px;right:14px;width:40px;height:40px}.music-toggle .music-note{font-size:18px}}
+
 </style>
 </head>
 <body>
+<audio id="bg-music" src="assets/audio/background.mp3" preload="auto" loop autoplay></audio>
+<button class="music-toggle muted" id="music-toggle" type="button" aria-label="播放背景音乐" title="播放/暂停背景音乐"><span class="music-note">♪</span></button>
 <div class="projector-beam"></div>
 <div class="sprockets left"></div>
 <div class="sprockets right"></div>
@@ -289,7 +327,7 @@ window.__FRAME_COVER_HIDE__ = function(){
 };
 document.addEventListener('DOMContentLoaded', function(){
   const btn = document.getElementById('cover-btn');
-  if (btn) btn.addEventListener('click', window.__FRAME_COVER_HIDE__);
+  if (btn) btn.addEventListener('click', function(){ window.__FRAME_COVER_HIDE__(); setTimeout(function(){ window.__FRAME_FORCE_MUSIC__?.(); }, 80); });
 });
 </script>
 <script type="module">
@@ -370,6 +408,32 @@ function updateLegend(i){
   const mod=loadedModules[i],leg=mod?.poster?.legend;
   if(leg){elLegend.innerHTML=leg.map(l=>`<div class="legend-item"><span class="legend-dot" style="background:${l.c};color:${l.c}"></span>${l.n}</div>`).join('');elLegend.style.display='flex'}else{elLegend.style.display='none'}
 }
+
+const bgMusic=document.getElementById('bg-music');
+const musicToggle=document.getElementById('music-toggle');
+let musicStarted=false;
+function setMusicState(playing){
+  musicToggle.classList.toggle('playing',playing);
+  musicToggle.classList.toggle('muted',!playing);
+  musicToggle.setAttribute('aria-label',playing?'暂停背景音乐':'播放背景音乐');
+}
+async function playMusic(){
+  try{
+    bgMusic.volume=0.50;
+    await bgMusic.play();
+    musicStarted=true;
+    setMusicState(true);
+  }catch(e){
+    setMusicState(false);
+  }
+}
+function pauseMusic(){
+  bgMusic.pause();
+  setMusicState(false);
+}
+musicToggle.addEventListener('click',()=>{bgMusic.paused?playMusic():pauseMusic()});
+window.__FRAME_FORCE_MUSIC__=playMusic;
+
 const loadedModules=[];
 async function goTo(i){
   if(i===current||i<0||i>=NODES.length||transitioning)return;
@@ -386,13 +450,14 @@ async function goTo(i){
   await new Promise(r=>setTimeout(r,140));
   overlay.classList.remove('active');shutter.classList.remove('active');transitioning=false;
 }
-const MODULE_VERSION='end-centered1';
+const MODULE_VERSION='music-force1';
 for(const n of NODES){try{loadedModules.push(await import(`./experiments/${n.file}.js?v=${MODULE_VERSION}`))}catch(e){console.error(`Failed ${n.file}:`,e);loadedModules.push({})}}
 let experienceStarted=false;
 function startExperience(){
   if(experienceStarted)return;
   experienceStarted=true;
   window.__FRAME_COVER_HIDE__?.();
+  playMusic();
   updatePoster(0);
   updateReel(0);
   if(loadedModules[0]?.init)loadedModules[0].init(scene,camera,controls,renderer,labelRenderer);
