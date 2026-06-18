@@ -16,7 +16,26 @@ const CR10_20 = [0.685, 0.731, 0.770, 0.762, 0.780, 0.750, 0.760, 0.855];
 const RATINGS = [7.1, 6.8, 6.5, 6.4, 6.6, 6.7, 6.5, 6.3];
 
 let group, fallingDots = [], dataLines = [], allLabels = [];
-let startTime = null, animPhase = 'fall';
+let startTime = null, animPhase = 'fall', lineFallbackTimer = null, dotFallbackTimer = null;
+
+function forceDotsReady() {
+  if (!group) return;
+  fallingDots.forEach((fd) => {
+    fd.dot.visible = true;
+    fd.dot.position.set(fd.targetX, fd.targetY, fd.dot.position.z);
+    if (fd.lbl) {
+      fd.lbl.visible = true;
+      fd.lbl.position.y = fd.targetY + 20;
+    }
+  });
+}
+
+function forceLinesReady() {
+  if (!group) return;
+  forceDotsReady();
+  dataLines.forEach((dl) => dl.line.geometry.setDrawRange(0, dl.vc));
+  animPhase = 'done';
+}
 
 function init(scene, camera, controls) {
   controls.target.set(0, 0, 0);
@@ -44,6 +63,17 @@ function init(scene, camera, controls) {
   }
   group.add(makeLabel('集中度', 11, ox - 60, oy + ph / 2, 5, '#8a8175'));
   YEARS.forEach((y, i) => group.add(makeLabel(String(y), 11, mx(i), oy - 22, 5, '#8A8175')));
+  const noteX = ox + pw / 2;
+  function addBottomNote(text, y, color, html = null) {
+    const note = makeLabel(text, 10, noteX, y, 5, color);
+    if (html) note.element.innerHTML = html;
+    note.element.style.cssText += ';padding:2px 8px;border-radius:999px;background:rgba(242,234,220,.62);white-space:nowrap;text-align:center';
+    group.add(note);
+  }
+  addBottomNote('CR = Concentration Ratio，表示头部影片票房占比集中度', oy - 54, '#6d5c49');
+  addBottomNote('黄色：CR5/CR10 头部聚光', oy - 84, '#6d5c49', '<span style="color:#d49a3d;font-weight:700">黄色</span>：CR5/CR10 头部聚光');
+  addBottomNote('橙色：CR10/CR20 腰部余光', oy - 114, '#6d5c49', '<span style="color:#d96f32;font-weight:700">橙色</span>：CR10/CR20 腰部余光');
+  addBottomNote('青色虚线：年度评分均值', oy - 144, '#6d5c49', '<span style="color:#2b9c94;font-weight:700">青色</span>虚线：年度评分均值');
 
   // Rating axis
   for (let i = 0; i <= 4; i++)
@@ -123,8 +153,8 @@ function init(scene, camera, controls) {
     const smoothPts = curve.getPoints(100);
     const g = new THREE.BufferGeometry().setFromPoints(smoothPts);
     const mat = dashed
-      ? new THREE.LineDashedMaterial({ color, dashSize: 5, gapSize: 4, opacity: 0.7 })
-      : new THREE.LineBasicMaterial({ color });
+      ? new THREE.LineDashedMaterial({ color, dashSize: 5, gapSize: 4, opacity: 0.7, transparent: true })
+      : new THREE.LineBasicMaterial({ color, opacity: 0.95, transparent: true });
     const l = dashed ? new THREE.Line(g, mat) : new THREE.Line(g, mat);
     if (dashed) l.computeLineDistances();
     l.geometry.setDrawRange(0, 0);
@@ -140,11 +170,15 @@ function init(scene, camera, controls) {
   const l3Data = makeSmoothLine(pts3, 0x4ecdc4, true);
   group.add(l3Data.line); dataLines.push(l3Data);
 
+  dotFallbackTimer = window.setTimeout(forceDotsReady, 2200);
+  lineFallbackTimer = window.setTimeout(forceLinesReady, 4200);
+
+
   camera.position.set(0, 0, 700);
   camera.lookAt(0, 0, 0);
 }
 
-function destroy() { group?.parent?.remove(group); group = null; fallingDots = []; dataLines = []; allLabels = []; startTime = null; animPhase = 'fall'; }
+function destroy() { if (lineFallbackTimer) { window.clearTimeout(lineFallbackTimer); lineFallbackTimer = null; } if (dotFallbackTimer) { window.clearTimeout(dotFallbackTimer); dotFallbackTimer = null; } group?.parent?.remove(group); group = null; fallingDots = []; dataLines = []; allLabels = []; startTime = null; animPhase = 'fall'; }
 
 function animate(t) {
   if (!startTime) startTime = t;
@@ -172,6 +206,11 @@ function animate(t) {
       animPhase = 'line';
       startTime = t; // reset timer for line phase
     }
+  }
+
+  if (animPhase === 'fall' && elapsed > 2200) forceDotsReady();
+  if (animPhase === 'fall' && elapsed > 4200) {
+    forceLinesReady();
   }
 
   if (animPhase === 'line') {

@@ -59,7 +59,7 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 #three-container{position:fixed;top:48%;left:50%;transform:translate(-50%,-50%);width:min(1180px,92vw);height:min(660px,78vh);z-index:3;pointer-events:none;overflow:hidden}#three-container canvas{display:block;pointer-events:auto;filter:contrast(1.02) saturate(.96)}
 #poster{position:fixed;top:48%;left:50%;transform:translate(-50%,-50%);width:min(1180px,92vw);height:min(660px,78vh);z-index:10;pointer-events:none;padding:34px 46px;display:flex;justify-content:space-between;align-items:flex-start}.story-panel{width:min(430px,42vw);pointer-events:auto;text-shadow:0 1px 0 rgba(255,255,255,.35)}#poster-chapter{font-size:11px;letter-spacing:5px;color:rgba(25,25,25,.55);font-weight:700;text-transform:uppercase}#poster-title{font-family:"Noto Serif SC","Songti SC",serif;font-size:clamp(30px,4vw,48px);font-weight:800;color:#18120b;line-height:1.12;margin-top:10px;max-width:560px;letter-spacing:.02em}#poster-title::after{content:"";display:block;width:72px;height:2px;background:linear-gradient(90deg,var(--amber),transparent);margin:18px 0 0}#poster-sub{font-size:14px;color:rgba(24,18,11,.66);margin-top:14px;max-width:480px;line-height:1.65;letter-spacing:.05em}#poster-stat{font-family:Georgia,"Times New Roman",serif;font-size:clamp(46px,6vw,76px);font-weight:800;color:#291706;line-height:1;margin-top:18px;letter-spacing:-.03em;text-shadow:0 8px 30px rgba(245,193,108,.22)}#poster-stat-label{font-size:12px;color:rgba(24,18,11,.58);margin-top:7px;letter-spacing:3px;font-weight:700}#poster-desc{font-size:13px;color:rgba(24,18,11,.72);line-height:1.8;margin-top:12px;max-width:430px;font-weight:400}.chapter-quote{position:absolute;left:46px;bottom:38px;max-width:520px;font-family:"Noto Serif SC","Songti SC",serif;font-size:18px;line-height:1.7;color:rgba(24,18,11,.78)}.chapter-quote span{color:#7a3b12;font-weight:800}.act-mark{position:absolute;right:48px;top:32px;font-family:Georgia,serif;font-size:112px;line-height:.8;color:rgba(24,18,11,.055);font-weight:800;letter-spacing:-.08em}
 #legend{position:fixed;right:42px;top:49%;transform:translateY(-50%);z-index:11;pointer-events:none;display:flex;flex-direction:column;gap:8px;background:rgba(12,10,7,.72);backdrop-filter:blur(14px);padding:13px 14px;border:1px solid rgba(245,193,108,.20);box-shadow:0 18px 60px rgba(0,0,0,.28)}.legend-item{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(247,239,224,.72);font-weight:400;white-space:nowrap}.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 12px currentColor}
-#film-nav{position:fixed;bottom:0;left:0;right:0;height:180px;z-index:20;pointer-events:none;background:linear-gradient(transparent 20%,rgba(0,0,0,.84) 55%,#050505 100%)}#film-svg{position:absolute;bottom:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible}.film-node{position:absolute;pointer-events:auto;cursor:pointer;z-index:3}.film-label{position:absolute;transform:translateX(-50%);text-align:center;pointer-events:none;color:rgba(247,239,224,.62);font-size:10px;letter-spacing:1px;white-space:nowrap}.film-label b{display:block;color:rgba(245,193,108,.84);font-family:Georgia,serif;font-size:14px;margin-bottom:2px}.film-progress{position:fixed;left:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--gold));z-index:25;width:0%;box-shadow:0 0 14px rgba(245,193,108,.7);transition:width .7s cubic-bezier(.22,1,.36,1)}
+#film-nav{position:fixed;bottom:0;left:0;right:0;height:198px;z-index:20;pointer-events:none;background:linear-gradient(transparent 20%,rgba(0,0,0,.84) 55%,#050505 100%)}#film-nodes{position:absolute;inset:0;transform:translateY(-15px);}#film-svg{position:absolute;bottom:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible}.film-node{position:absolute;pointer-events:auto;cursor:pointer;z-index:3}.film-label{position:absolute;transform:translateX(-50%);text-align:center;pointer-events:none;color:rgba(247,239,224,.62);font-size:10px;letter-spacing:1px;white-space:nowrap}.film-label b{display:block;color:rgba(245,193,108,.84);font-family:Georgia,serif;font-size:14px;margin-bottom:2px}.film-progress{position:fixed;left:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--gold));z-index:25;width:0%;box-shadow:0 0 14px rgba(245,193,108,.7);transition:width .7s cubic-bezier(.22,1,.36,1)}
 #overlay{position:fixed;inset:0;z-index:30;pointer-events:none;background:#040302;opacity:0;transition:opacity .45s}#overlay.active{opacity:1}.shutter{position:fixed;inset:0;z-index:31;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent 0 47%,rgba(245,193,108,.28) 50%,transparent 53%);transform:scaleX(.2);transition:opacity .28s,transform .5s}.shutter.active{opacity:1;transform:scaleX(1)}
 #cover{position:fixed;inset:0;z-index:60;background:#050505;display:flex;align-items:center;justify-content:center;transition:opacity .85s ease,filter .85s ease;pointer-events:auto;overflow:hidden}.cover-reel{position:absolute;inset:-10%;opacity:.34;background:repeating-linear-gradient(90deg,transparent 0 34px,rgba(245,193,108,.12) 35px 42px,transparent 43px 82px),radial-gradient(circle at 50% 50%,rgba(245,193,108,.18),transparent 38%);animation:reelMove 12s linear infinite}@keyframes reelMove{to{transform:translateX(-82px)}}.cover-beam{position:absolute;left:-12%;top:18%;width:82%;height:54%;background:linear-gradient(14deg,rgba(245,193,108,.22),rgba(245,193,108,.06) 55%,transparent);clip-path:polygon(0 42%,100% 0,100% 100%,0 62%);filter:blur(8px);animation:beamPulse 5s ease-in-out infinite}.cover-content{position:relative;z-index:2;text-align:center;max-width:900px;padding:0 24px}.cover-kicker{font-size:12px;letter-spacing:7px;color:rgba(245,193,108,.72);margin-bottom:24px}.cover-title{font-family:"Noto Serif SC","Songti SC",serif;font-size:clamp(72px,13vw,160px);font-weight:900;letter-spacing:.2em;color:#f8edda;text-shadow:0 0 18px rgba(245,193,108,.35),0 24px 80px rgba(0,0,0,.8);margin-right:-.2em}.cover-en{font-family:Georgia,serif;font-size:13px;letter-spacing:10px;color:rgba(247,239,224,.42);margin-top:2px}.cover-desc{font-size:16px;line-height:1.9;letter-spacing:3px;color:rgba(247,239,224,.72);margin:32px auto 36px;max-width:620px}.cover-timeline{display:flex;justify-content:center;gap:12px;margin-bottom:36px}.cover-timeline span{font-family:Georgia,serif;color:rgba(245,193,108,.65);font-size:12px;border-top:1px solid rgba(245,193,108,.24);padding-top:8px;min-width:52px}#cover button{position:relative;padding:13px 54px;border:1px solid rgba(245,193,108,.72);background:rgba(245,193,108,.06);color:#f5c16c;font-size:13px;letter-spacing:5px;cursor:pointer;transition:all .35s;font-family:inherit;overflow:hidden}#cover button::before{content:"";position:absolute;inset:0;transform:translateX(-120%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transition:transform .6s}#cover button:hover{background:#f5c16c;color:#120b05;box-shadow:0 0 28px rgba(245,193,108,.3)}#cover button:hover::before{transform:translateX(120%)}#cover.hidden{opacity:0;filter:blur(6px);pointer-events:none}.skip-hint{margin-top:14px;font-size:11px;color:rgba(247,239,224,.32);letter-spacing:2px}
 #detail-overlay{display:none;position:fixed;inset:0;z-index:50;background:rgba(5,4,3,.78);backdrop-filter:blur(18px);pointer-events:auto;align-items:center;justify-content:center}#detail-card{width:340px;background:#f2eadc;border:1px solid rgba(245,193,108,.35);transform:scale(.95);transition:transform .22s;box-shadow:0 30px 120px rgba(0,0,0,.45)}#detail-header{height:96px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid rgba(0,0,0,.08)}#detail-title{font-size:17px!important;font-weight:800!important;color:#1b130a!important}#detail-desc{color:rgba(27,19,10,.62)!important}.cam-video{position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;transform:scaleX(-1);z-index:4;opacity:0;transition:opacity .5s;pointer-events:none}#cam-bg.active{opacity:.34!important;filter:grayscale(.8) contrast(1.2)}
@@ -96,6 +96,7 @@ body.page2 #poster-stat{font-size:clamp(34px,4vw,52px)!important;}
 .act-mark{right:74px!important;top:44px!important;font-size:108px!important;opacity:.78;}
 #legend{right:62px!important;top:51%!important;padding:12px 13px!important;background:rgba(12,10,7,.68)!important;}
 .legend-item{font-size:10.5px!important;}
+#three-container,#poster,#legend{transition:opacity 1.45s ease;}
 #three-container{z-index:4;}
 #three-container .label-safe, .label-safe{max-width:260px;}
 @media(max-width:980px){
@@ -254,12 +255,98 @@ body.page6 #legend{display:none!important}
   border-radius:999px;
 }
 @keyframes musicSpin{to{transform:rotate(360deg)}}
+.sound-hint{
+  margin-top:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  color:rgba(247,239,224,.52);
+  font-size:12px;
+  letter-spacing:2px;
+  animation:soundHintBreath 2.4s ease-in-out infinite;
+  text-shadow:0 0 16px rgba(245,193,108,.18);
+}
+.sound-hint-icon{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:1px solid rgba(245,193,108,.34);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:rgba(245,193,108,.78);
+  font-size:13px;
+  box-shadow:0 0 16px rgba(245,193,108,.10);
+}
+@keyframes soundHintBreath{
+  0%,100%{opacity:.38;filter:brightness(.92)}
+  50%{opacity:.86;filter:brightness(1.18)}
+}
+
 @media(max-width:760px){.music-toggle{top:14px;right:14px;width:40px;height:40px}.music-toggle .music-note{font-size:18px}}
+
+.system-restart{
+  position:fixed;
+  inset:0;
+  z-index:70;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+  color:rgba(247,239,224,.86);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;
+  font-size:15px;
+  letter-spacing:4px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .45s ease;
+}
+.system-restart.active{opacity:1}
+.system-restart::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.12;
+  background-image:radial-gradient(rgba(255,255,255,.7) .55px,transparent .7px);
+  background-size:3px 3px;
+}
+.system-restart span{
+  position:relative;
+  z-index:1;
+  text-shadow:0 0 18px rgba(245,193,108,.25);
+  animation:systemTextBreath 1.18s ease-in-out infinite;
+}
+@keyframes systemTextBreath{
+  0%,100%{opacity:.48;text-shadow:0 0 8px rgba(245,193,108,.12)}
+  50%{opacity:1;text-shadow:0 0 24px rgba(245,193,108,.46)}
+}
+body.act45-closing #three-container,
+body.act45-closing #poster,
+body.act45-closing #legend{
+  opacity:0!important;
+  transition:opacity 2.2s ease!important;
+  pointer-events:none!important;
+}
+body.act45-closing .page-arrow,
+body.act45-closing #film-nav{
+  pointer-events:none!important;
+}
+
+
+
+body.page5 #poster-title{max-width:390px!important}
+body.page5 #poster-sub{white-space:pre-line!important;max-width:360px!important;line-height:1.85!important;font-size:13px!important;color:rgba(24,18,11,.68)!important}
+body.page5 #poster-stat{font-family:Georgia,"Times New Roman","Noto Serif SC","Songti SC",serif!important;font-size:clamp(30px,3.75vw,48px)!important;font-weight:800!important;letter-spacing:0!important;color:#291706!important;margin-top:28px!important;text-shadow:0 6px 24px rgba(245,193,108,.16)!important}
+body.page5 #poster-stat-label,body.page5 #poster-desc{display:none!important}
+body.page5 .chapter-quote{font-size:17px!important;color:rgba(24,18,11,.66)!important}
+body.page5 .chapter-quote span{color:#7a3b12!important;font-weight:700!important}
 
 </style>
 </head>
 <body>
-<audio id="bg-music" src="assets/audio/background.mp3" preload="auto" loop autoplay></audio>
+<audio id="bg-music" src="assets/audio/background.mp3" preload="auto" loop></audio>
+<audio id="page-sfx" src="assets/audio/page-click.mp3" preload="auto"></audio>
 <button class="music-toggle muted" id="music-toggle" type="button" aria-label="播放背景音乐" title="播放/暂停背景音乐"><span class="music-note">♪</span></button>
 <div class="projector-beam"></div>
 <div class="sprockets left"></div>
@@ -277,6 +364,7 @@ body.page6 #legend{display:none!important}
     <div class="cover-desc">2018—2025 中国电影票房结构与观众情绪变迁史<br>从银幕狂欢，到突然熄灭，再到重新寻找自己。</div>
     <div class="cover-timeline"><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span></div>
     <button id="cover-btn">进入放映厅</button>
+    <div class="sound-hint"><span class="sound-hint-icon">♪</span><span>建议佩戴耳机，或将音量调至 40% 以上</span></div>
     <div class="skip-hint">推荐使用左右方向键切换章节</div>
   </div>
 </div>
@@ -314,6 +402,7 @@ body.page6 #legend{display:none!important}
 <button class="page-arrow" id="page-next" aria-label="下一页">›</button>
 <div id="legend"></div>
 <div id="overlay"></div>
+<div class="system-restart" id="system-restart"><span>正在重新启动放映系统</span></div>
 <div class="shutter" id="shutter"></div>
 
 <script>
@@ -327,7 +416,7 @@ window.__FRAME_COVER_HIDE__ = function(){
 };
 document.addEventListener('DOMContentLoaded', function(){
   const btn = document.getElementById('cover-btn');
-  if (btn) btn.addEventListener('click', function(){ window.__FRAME_COVER_HIDE__(); setTimeout(function(){ window.__FRAME_FORCE_MUSIC__?.(); }, 80); });
+  if (btn) btn.addEventListener('click', window.__FRAME_COVER_HIDE__);
 });
 </script>
 <script type="module">
@@ -339,7 +428,7 @@ const NODES = [
   { id:'chart2', label:'突然熄灭', ico:'🕯️', chapter:'02', title:'突然熄灭：电影院被按下暂停键', sub:'2020—2022｜疫情让市场结构发生断层', stat:'0.45→0.61→0.79', statLabel:'疫情前→疫情期→后疫情 CR10', desc:'疫情没有只改变票房数字，它改变了谁能留下：中腰部影片变得脆弱，头部影片变得更亮，也更孤独。', quote:'银幕还在，<span>但座位暗了下去。</span>', file:'chart2', statClass:'stat-sm' },
   { id:'chart3', label:'新的英雄', ico:'🚀', chapter:'03', title:'新的英雄：想象力以脉冲出现', sub:'国产科幻 / 奇幻的爆款式跃迁', stat:'32.5%', statLabel:'2025 科幻/奇幻占比峰值', desc:'科幻与奇幻并没有稳定增长，而像放映机里突然亮起的强光：哪吒、流浪地球、独行月球，每次爆发都短促但耀眼。', quote:'中国电影开始讲自己的神话，<span>也开始想象自己的宇宙。</span>', file:'chart3' },
   { id:'chart4', label:'寻找自己', ico:'🎚️', chapter:'04', title:'寻找自己：票房与口碑开始离焦', sub:'票房占比 × 豆瓣评分｜聚焦、过曝与离焦', stat:'4.7~8.8', statLabel:'年度前20评分跨度', desc:'2018—2025年，中国电影市场逐渐从"内容驱动"转向"内容+传播驱动"。头部影片票房占比持续提升，但评分区间却从4.7延伸至8.8。高票房不再意味着高口碑，观众偏好正在加速分层。中国电影进入多元价值并存的新阶段。', quote:'电影不再只是逃离现实，<span>而是在重新理解现实。</span>', file:'chart4' },
-  { id:'bubble', label:'下一帧', ico:'🌌', chapter:'05', title:'下一帧：进入中国电影宇宙', sub:'80部代表影片｜自由探索与手势交互', stat:'604部', statLabel:'全量数据样本', desc:'最后一幕不是结论，而是把观众交还给星空。每颗光点都是一部电影，也是一段被时代点亮的情绪。', quote:'从《红海行动》到《热辣滚烫》，变化的不只是票房，<span>是观众看待世界的方式。</span>', file:'bubble' },
+  { id:'bubble', label:'下一帧', ico:'🌌', chapter:'05', title:'下一帧 · 进入影像宇宙', sub:'这里不再是统计，而是影像的集合。\n每一帧数据，都来自一部真实的电影。\n你正在进入被时间筛选后的视觉记忆。', stat:'604 帧记忆影像', statLabel:'', desc:'', quote:'每一帧影像都在继续播放，<span>每一次观看，都在重新发生。</span>', file:'bubble' },
   { id:'end', label:'片尾余光', ico:'🎬', chapter:'06', title:'帧相', sub:'片尾余光', stat:'', statLabel:'', desc:'数据来自猫眼专业版、灯塔专业版 App 与豆瓣电影。样本按年度计算单片票房占比，并剔除低于 0.1% 的影片，聚焦主流及头部影片的结构变化。', quote:'下一帧仍在放映，<span>下一次观看已经开始。</span>', file:'end' }
 ];
 
@@ -349,6 +438,7 @@ const ns='http://www.w3.org/2000/svg';
 const nodesEl=document.getElementById('film-nodes');
 const overlay=document.getElementById('overlay');
 const shutter=document.getElementById('shutter');
+const systemRestart=document.getElementById('system-restart');
 const progress=document.getElementById('film-progress');
 const elLegend=document.getElementById('legend');
 const pagePrev=document.getElementById('page-prev');
@@ -373,26 +463,42 @@ addPath('M45,162 Q600,82 1155,162','rgba(245,193,108,.72)',2,.65,'10 18');
 for(let i=0;i<54;i++){const t=i/53,pos=bezier(t);const hole=document.createElementNS(ns,'rect');hole.setAttribute('x',pos.x-3.5);hole.setAttribute('y',pos.y-20);hole.setAttribute('width','7');hole.setAttribute('height','10');hole.setAttribute('rx','1.5');hole.setAttribute('fill','rgba(242,234,220,.82)');hole.setAttribute('opacity',i%2?'.55':'.78');svg.appendChild(hole)}
 const NODE_T=Array.from({length:NODES.length},(_,i)=>NODES.length===1?0:i/(NODES.length-1));
 NODE_T.forEach((t,i)=>{
-  const pos=bezier(t),pX=pos.x/1200*100,pY=pos.y/210*100;
+  const pos=bezier(t),pY=pos.y/210*100;
+  const rawPX=pos.x/1200*100;
+  const pX=i===0?4.2:i===NODES.length-1?95.0:rawPX;
   const dot=document.createElement('div');dot.className='film-node'+(i===0?' active':'');dot.dataset.index=i;
   dot.style.cssText=`left:calc(${pX}% - 13px);top:calc(${pY}% - 13px);width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#fff 0 12%,#f5c16c 14% 46%,#8a3d14 74%);box-shadow:0 0 0 5px rgba(245,193,108,.10),0 0 24px rgba(245,193,108,.28);transition:transform .35s,box-shadow .35s,filter .35s`;
   dot.addEventListener('click',()=>goTo(i));dot.addEventListener('mouseenter',()=>dot.style.filter='brightness(1.28)');dot.addEventListener('mouseleave',()=>dot.style.filter='');nodesEl.appendChild(dot);
-  const lb=document.createElement('div');lb.className='film-label';lb.style.left=`${pX}%`;lb.style.top=`calc(${pY}% + ${([8,12,18,18,12,8][i] ?? 12)}px)`;lb.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b>${NODES[i].label}`;nodesEl.appendChild(lb);
+  const lb=document.createElement('div');lb.className='film-label';lb.style.left=`${pX}%`;
+  const labelOffset=([16,12,18,18,12,16][i] ?? 12);
+  lb.style.top=`calc(${pY}% + ${labelOffset}px)`;
+  lb.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b>${NODES[i].label}`;nodesEl.appendChild(lb);
 });
 function updateReel(i){
-  nodesEl.querySelectorAll('.film-node').forEach((n,j)=>{n.classList.toggle('active',j===i);n.style.transform=j===i?'scale(1.34) translateY(-2px)':j<i?'scale(.86)':'scale(1)';n.style.boxShadow=j===i?'0 0 0 7px rgba(245,193,108,.16),0 0 34px rgba(245,193,108,.68)':j<i?'0 0 0 3px rgba(245,193,108,.06),0 0 8px rgba(245,193,108,.14)':'0 0 0 5px rgba(245,193,108,.10),0 0 24px rgba(245,193,108,.28)'});
+  nodesEl.querySelectorAll('.film-node').forEach((n,j)=>{n.classList.toggle('active',j===i);n.style.transform=j===i?'scale(1.34)':j<i?'scale(.86)':'scale(1)';n.style.boxShadow=j===i?'0 0 0 7px rgba(245,193,108,.16),0 0 34px rgba(245,193,108,.68)':j<i?'0 0 0 3px rgba(245,193,108,.06),0 0 8px rgba(245,193,108,.14)':'0 0 0 5px rgba(245,193,108,.10),0 0 24px rgba(245,193,108,.28)'});
   progress.style.width=`${(i/(NODES.length-1))*100}%`;
   pagePrev.classList.toggle('disabled',i===0);
   pageNext.classList.toggle('disabled',i===NODES.length-1);
 }
+function sanitizeText(text) {
+  if (!text) return text;
+  return String(text)
+    .replaceAll('疫情期', '特殊时期')
+    .replaceAll('疫情前', '特殊时期前')
+    .replaceAll('后疫情', '后特殊时期')
+    .replaceAll('疫情', '特殊时期');
+}
+window.__FRAME_SANITIZE_TEXT__=sanitizeText;
 function rollNumber(s,el,d=850){
   if(rollAnim){cancelAnimationFrame(rollAnim);rollAnim=null}
   const parts=[];let li=0;const rx=/(\d+\.?\d*)/g;let m;while((m=rx.exec(s))!==null){parts.push({text:s.slice(li,m.index),val:parseFloat(m[0]),raw:m[0]});li=m.index+m[0].length}parts.push({text:s.slice(li),val:null,raw:''});
+  s=sanitizeText(s);
   if(parts.length===1){el.textContent=s;return}
   const st=performance.now();function tk(now){const t=Math.min((now-st)/d,1),e=1-Math.pow(1-t,3);let r='';for(const p of parts){r+=p.text;if(p.val!==null){const c=p.val*e,dc=p.raw.includes('.')?p.raw.split('.')[1].length:0;r+=dc?c.toFixed(dc):Math.round(c)}}el.textContent=r;if(t<1)rollAnim=requestAnimationFrame(tk)}tk(st)
 }
 function updatePoster(i){
-  const n=NODES[i];
+  const n={...NODES[i]};
+  ['label','title','sub','stat','statLabel','desc','quote'].forEach((key)=>{n[key]=sanitizeText(n[key])});
   const cq=document.getElementById('chapter-quote');if(cq)cq.style.bottom='90px';
   document.getElementById('poster-chapter').textContent=`${n.ico} ACT ${n.chapter} · ${n.label}`;
   document.getElementById('poster-title').textContent=n.title;
@@ -406,10 +512,11 @@ function updatePoster(i){
 }
 function updateLegend(i){
   const mod=loadedModules[i],leg=mod?.poster?.legend;
-  if(leg){elLegend.innerHTML=leg.map(l=>`<div class="legend-item"><span class="legend-dot" style="background:${l.c};color:${l.c}"></span>${l.n}</div>`).join('');elLegend.style.display='flex'}else{elLegend.style.display='none'}
+  if(leg){elLegend.innerHTML=leg.map(l=>`<div class="legend-item"><span class="legend-dot" style="background:${l.c};color:${l.c}"></span>${sanitizeText(l.n)}</div>`).join('');elLegend.style.display='flex'}else{elLegend.style.display='none'}
 }
 
 const bgMusic=document.getElementById('bg-music');
+const pageSfx=document.getElementById('page-sfx');
 const musicToggle=document.getElementById('music-toggle');
 let musicStarted=false;
 function setMusicState(playing){
@@ -431,12 +538,67 @@ function pauseMusic(){
   bgMusic.pause();
   setMusicState(false);
 }
+function fadeAudio(audio, to, duration=1000){
+  if(!audio) return Promise.resolve();
+  const from=Number.isFinite(audio.volume)?audio.volume:0.5;
+  const start=performance.now();
+  return new Promise((resolve)=>{
+    function step(now){
+      const p=Math.min((now-start)/duration,1);
+      audio.volume=from+(to-from)*p;
+      if(p<1) requestAnimationFrame(step);
+      else resolve();
+    }
+    requestAnimationFrame(step);
+  });
+}
+async function restartBackgroundForAct05(){
+  try{
+    const src=bgMusic.getAttribute('src');
+    bgMusic.pause();
+    bgMusic.volume=0;
+    bgMusic.currentTime=0;
+    // Hard reset the audio element so ACT05 starts as a new projection, not a resumed track.
+    if(src){
+      bgMusic.src=src;
+      bgMusic.load();
+      await new Promise(resolve=>{
+        const done=()=>{bgMusic.removeEventListener('loadedmetadata',done);resolve();};
+        bgMusic.addEventListener('loadedmetadata',done,{once:true});
+        setTimeout(done,420);
+      });
+    }
+    bgMusic.currentTime=0;
+    bgMusic.volume=0;
+    await bgMusic.play();
+    musicStarted=true;
+    setMusicState(true);
+    fadeAudio(bgMusic,0.5,2600);
+  }catch(e){
+    setMusicState(false);
+  }
+}
+function playProjectorStart(){
+  // Projector Start is represented by the background track restarting from 0.
+}
+function playPageSound(){
+  if(!pageSfx) return;
+  try{
+    const sfx=pageSfx.cloneNode(true);
+    sfx.volume=0.58;
+    sfx.play().catch(()=>{});
+    sfx.addEventListener('ended',()=>sfx.remove(),{once:true});
+  }catch(e){}
+}
+window.__FRAME_PLAY_PAGE_SFX__=playPageSound;
 musicToggle.addEventListener('click',()=>{bgMusic.paused?playMusic():pauseMusic()});
-window.__FRAME_FORCE_MUSIC__=playMusic;
 
 const loadedModules=[];
 async function goTo(i){
   if(i===current||i<0||i>=NODES.length||transitioning)return;
+  const act04To05 = current===3 && i===4;
+  if(act04To05){await goAct04To05();return}
+  playPageSound();
   transitioning=true;overlay.classList.add('active');shutter.classList.add('active');
   await new Promise(r=>setTimeout(r,430));
   if(loadedModules[current]?.destroy)loadedModules[current].destroy();
@@ -450,7 +612,33 @@ async function goTo(i){
   await new Promise(r=>setTimeout(r,140));
   overlay.classList.remove('active');shutter.classList.remove('active');transitioning=false;
 }
-const MODULE_VERSION='music-force1';
+async function goAct04To05(){
+  transitioning=true;
+  playPageSound();
+  document.body.classList.add('act45-closing');
+  await fadeAudio(bgMusic,0,2500);
+  bgMusic.pause();
+  bgMusic.currentTime=0;
+  await new Promise(r=>setTimeout(r,420));
+  systemRestart.classList.add('active');
+  await new Promise(r=>setTimeout(r,1250));
+  if(loadedModules[current]?.destroy)loadedModules[current].destroy();
+  clearScene();
+  while(labelRenderer.domElement.firstChild)labelRenderer.domElement.removeChild(labelRenderer.domElement.firstChild);
+  ['poster-sub','poster-stat','poster-stat-label','poster-desc'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='';delete el.dataset.hiddenBy}});
+  current=4;updatePoster(4);updateReel(4);
+  const mod=loadedModules[4];
+  if(mod?.init)mod.init(scene,camera,controls,renderer,labelRenderer);else if(mod?.default?.init)mod.default.init(scene,camera,controls,renderer,labelRenderer);
+  updateLegend(4);
+  await restartBackgroundForAct05();
+  playProjectorStart();
+  await new Promise(r=>setTimeout(r,650));
+  systemRestart.classList.remove('active');
+  await new Promise(r=>setTimeout(r,220));
+  document.body.classList.remove('act45-closing');
+  transitioning=false;
+}
+const MODULE_VERSION='act05-stat-size-weight1';
 for(const n of NODES){try{loadedModules.push(await import(`./experiments/${n.file}.js?v=${MODULE_VERSION}`))}catch(e){console.error(`Failed ${n.file}:`,e);loadedModules.push({})}}
 let experienceStarted=false;
 function startExperience(){

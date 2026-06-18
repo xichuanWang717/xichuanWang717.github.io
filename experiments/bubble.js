@@ -1,4 +1,10 @@
 import * as THREE from 'three';
+
+const sanitizeText = (text) => {
+  if (!text) return text;
+  const sanitizer = window.__FRAME_SANITIZE_TEXT__;
+  return sanitizer ? sanitizer(text) : String(text).replaceAll('疫情', '特殊时期');
+};
 import { CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
 export const poster = {};
@@ -194,6 +200,7 @@ let cameraOn = false;
 let mpReady = false;
 let handData = { hands: [], ts: 0 };
 let lastPinch = false;
+let pinchFrames = 0;
 let prevPos = null;
 let prevHandDistance = null;
 let waveSamples = [];
@@ -210,6 +217,11 @@ let hintBlankClickTimer = null;
 
 function yearColor(movie) {
   return YEAR_COLORS[Number(movie.y)] || 0xf5c16c;
+}
+
+function getYearRadius(year) {
+  const idx = Math.max(0, YEARS.indexOf(Number(year)));
+  return 140 + (YEARS.length - 1 - idx) * 105;
 }
 
 function genreKey(movie) {
@@ -255,11 +267,17 @@ function addSupport(obj) {
 
 
 function getBubbleMovies() {
-  return (window.__MOVIES__ || [])
-    .filter((m) => Number(m.s) > 0.008)
+  const filtered = (window.__MOVIES__ || [])
+    .filter((m) => YEARS.includes(Number(m.y)) && Number(m.s) > 0.008)
     .slice()
-    .sort((a, b) => (a.y - b.y) || (a.r - b.r))
-    .slice(0, 96);
+    .sort((a, b) => (Number(a.r) - Number(b.r)));
+  const byYear = new Map();
+  filtered.forEach((movie) => {
+    const year = Number(movie.y);
+    if (!byYear.has(year)) byYear.set(year, []);
+    byYear.get(year).push(movie);
+  });
+  return YEARS.flatMap((year) => (byYear.get(year) || []).slice(0, 20));
 }
 
 function getActiveGenres() {
@@ -330,7 +348,7 @@ function showEntryHint() {
     'inset:0',
     'z-index:45',
     'pointer-events:none',
-    'background:linear-gradient(90deg,rgba(5,4,3,.42),rgba(5,4,3,.18) 42%,rgba(5,4,3,.08))',
+    'background:linear-gradient(90deg,rgba(3,2,1,.72),rgba(3,2,1,.54) 42%,rgba(3,2,1,.34))',
     'display:flex',
     'align-items:center',
     'justify-content:flex-end',
@@ -376,7 +394,7 @@ function registerBlankHintClick() {
     hintBlankClickTimer = null;
   }, 820);
   if (hintBlankClicks >= 2) {
-    if (rulesOpen) rules.style.display = 'none';
+    if (rulesOpen) { rules.style.display = 'none'; refreshButtons(); }
     if (entryHint) dismissEntryHint();
     if (gestureHelp) closeGestureHelp();
     hintBlankClicks = 0;
@@ -389,12 +407,13 @@ function registerBlankHintClick() {
 
 function buildYearRings() {
   YEARS.forEach((year, idx) => {
-    const radius = 140 + idx * 105;
-    const geo = new THREE.RingGeometry(radius - 0.8, radius + 0.8, 160);
+    const radius = getYearRadius(year);
+    const outerWeight = (radius - 140) / (105 * (YEARS.length - 1));
+    const geo = new THREE.RingGeometry(radius - 1.35, radius + 1.35, 180);
     const mat = new THREE.MeshBasicMaterial({
       color: YEAR_COLORS[year] || 0xf2eadc,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.28 + outerWeight * 0.22,
       side: THREE.DoubleSide,
       depthWrite: false,
     });
@@ -403,15 +422,17 @@ function buildYearRings() {
     ring.position.set(220, -46, 0);
     addSupport(ring);
 
+    const yearHex = `#${(YEAR_COLORS[year] || 0xf2eadc).toString(16).padStart(6, '0')}`;
     const label = makeLabel(String(year), [
-      'color:rgba(245,193,108,.62)',
-      'font-size:11px',
-      'font-weight:700',
+      `color:${yearHex}`,
+      'font-size:12px',
+      'font-weight:800',
       'letter-spacing:1px',
-      'padding:2px 7px',
+      'padding:3px 8px',
       'border-radius:999px',
-      'background:rgba(10,8,5,.34)',
-      'border:1px solid rgba(245,193,108,.18)',
+      'background:rgba(6,5,3,.62)',
+      `border:1px solid ${yearHex}88`,
+      `box-shadow:0 0 14px ${yearHex}44`,
       'pointer-events:none',
       'white-space:nowrap',
     ].join(';'));
@@ -475,20 +496,21 @@ function buildMovies() {
 
   const yearAnchors = new Map();
   YEARS.forEach((year, idx) => {
-    const radius = 140 + idx * 105;
+    const radius = getYearRadius(year);
     const anchor = new THREE.Vector3(220 + radius, 82, 0);
     yearAnchors.set(year, anchor);
   });
 
+  const activeGenres = getActiveGenres();
   movies.forEach((movie, idx) => {
     const yearIndex = Math.max(0, YEARS.indexOf(Number(movie.y)));
-    const yearRadius = 140 + yearIndex * 105;
+    const yearRadius = getYearRadius(movie.y);
     const genre = genreKey(movie);
-    const genreIndex = GENRES.indexOf(genre);
-    const baseAngle = (genreIndex / GENRES.length) * Math.PI * 2 - Math.PI / 2;
+    const genreIndex = Math.max(0, activeGenres.indexOf(genre));
+    const baseAngle = (genreIndex / activeGenres.length) * Math.PI * 2 - Math.PI / 2;
     const sameYear = byYear.get(Number(movie.y)) || [];
     const localRank = sameYear.indexOf(movie);
-    const spiral = (localRank % 13 - 6) * 0.13;
+    const spiral = (localRank % 13 - 6) * 0.045;
     const jitterR = ((localRank * 47) % 128) - 64;
     const angle = baseAngle + spiral;
     const radius = yearRadius + jitterR + Math.floor(localRank / 13) * 58;
@@ -655,7 +677,7 @@ function buildUI() {
     'border:1px solid rgba(78,205,196,.22)',
     'backdrop-filter:blur(12px)',
     'font-size:12px',
-    'line-height:1.8',
+    'line-height:1.68',
     'pointer-events:none',
     'box-shadow:0 14px 40px rgba(0,0,0,.32)',
   ].join(';');
@@ -672,8 +694,8 @@ function buildUI() {
     'display:none',
     'position:absolute',
     'left:22px',
-    'bottom:148px',
-    'width:292px',
+    'bottom:170px',
+    'width:330px',
     'padding:14px 15px',
     'background:rgba(8,6,4,.74)',
     'border:1px solid rgba(245,193,108,.25)',
@@ -681,11 +703,14 @@ function buildUI() {
     'box-shadow:0 18px 54px rgba(0,0,0,.38)',
     'color:rgba(247,239,224,.72)',
     'font-size:12px',
-    'line-height:1.8',
+    'line-height:1.68',
     'pointer-events:auto',
   ].join(';');
   rules.innerHTML = [
     '<div style="color:#f5c16c;font-weight:800;letter-spacing:2px;margin-bottom:6px">星海规则</div>',
+    '<div><b style="color:#f5c16c">样本</b>：每一年取票房占比进入前 20 的影片，形成同等口径的年度星群。</div>',
+    '<div><b style="color:#f5c16c">类型口径</b>：按本页实际出现影片的主要叙事驱动力归类。</div>',
+    '<div style="font-size:12px;color:rgba(247,239,224,.64);line-height:1.75">剧情/现实：现实处境、家庭关系、社会议题或人物命运。动作/冒险：追逐、战斗、任务与冒险推进。科幻/奇幻：未来科技、宇宙想象或超现实设定。喜剧：以幽默冲突和轻松节奏为核心。动画：动画制作为主要形式。悬疑/惊悚：谜题、犯罪、恐惧或紧张感驱动。战争/历史：战争事件、历史人物或时代叙事。爱情：爱情关系本身构成核心矛盾。</div>',
     '<div><b style="color:#f5c16c">颜色</b>：年份。2018-2025 使用不同颜色，越靠后的年份越偏暖、越明亮。</div>',
     '<div><b style="color:#f5c16c">大小</b>：票房占比。越大的星球，市场占比越高。</div>',
     '<div><b style="color:#f5c16c">高度/光晕</b>：豆瓣评分。评分越高，位置和光感越突出。</div>',
@@ -717,14 +742,20 @@ function buildUI() {
 
   document.body.appendChild(uiContainer);
 
-  allBtn.onclick = () => setFilter('all');
-  topBtn.onclick = () => setFilter('top5');
-  resetBtn.onclick = resetView;
+  allBtn.onclick = () => { playUiSfx(); setFilter('all'); };
+  topBtn.onclick = () => { playUiSfx(); setFilter('top5'); };
+  resetBtn.onclick = () => { playUiSfx(); resetView(); };
   rulesBtn.onclick = () => {
+    playUiSfx();
     rules.style.display = rules.style.display === 'none' ? 'block' : 'none';
+    refreshButtons();
   };
-  handBtn.onclick = toggleGesture;
+  handBtn.onclick = () => { playUiSfx(); toggleGesture(); };
   refreshButtons();
+}
+
+function playUiSfx() {
+  window.__FRAME_PLAY_PAGE_SFX__?.();
 }
 
 function makeButton(text) {
@@ -748,8 +779,11 @@ function makeButton(text) {
 function refreshButtons() {
   const buttons = uiContainer?.querySelectorAll('button') || [];
   buttons.forEach((btn) => {
+    const rules = document.getElementById('bubble-rules');
+    const rulesOpen = rules && rules.style.display !== 'none';
     const active = (btn.textContent === '全部' && filterMode === 'all')
       || (btn.textContent === 'TOP5' && filterMode === 'top5')
+      || (btn.textContent === '规则' && rulesOpen)
       || (btn.id === 'bubble-hand-btn' && gestureMode);
     btn.style.background = active ? '#f5c16c' : 'rgba(245,193,108,.06)';
     btn.style.color = active ? '#120b05' : 'rgba(247,239,224,.72)';
@@ -878,6 +912,7 @@ function showDetail(idx) {
   poppedIdx = idx;
 
   const b = bubbles[idx];
+  window.__FRAME_PLAY_PAGE_SFX__?.();
   createBurst(b);
   const movie = b.movie;
   const colorNum = yearColor(movie);
@@ -885,15 +920,16 @@ function showDetail(idx) {
   document.getElementById('detail-emoji').textContent = getEmoji(movie);
   document.getElementById('detail-emoji').parentElement.style.background = `linear-gradient(135deg,${color},${color}66)`;
   document.getElementById('detail-title').textContent = String(movie.n);
+  const pillTextColor = Number(movie.y) === 2021 ? 'rgba(92,84,72,.92)' : color;
   document.getElementById('detail-meta').innerHTML = [
-    pill(String(movie.y), color),
-    pill(GENRE_LABELS[genreKey(movie)], color),
-    pill(`票房占比 ${(Number(movie.s) * 100).toFixed(1)}%`, color),
+    pill(String(movie.y), color, pillTextColor),
+    pill(GENRE_LABELS[genreKey(movie)], color, pillTextColor),
+    pill(`票房占比 ${(Number(movie.s) * 100).toFixed(1)}%`, color, pillTextColor),
     Number(movie.r) <= 5 ? pill(`年度 TOP${movie.r}`, '#f5c16c') : '',
   ].join('');
-  document.getElementById('detail-desc').textContent = Number(movie.rt)
+  document.getElementById('detail-desc').textContent = sanitizeText(Number(movie.rt)
     ? `豆瓣评分 ${Number(movie.rt).toFixed(1)}。星球大小代表票房占比，高度和光晕呼应口碑评分。`
-    : '星球大小代表票房占比，高度和光晕呼应口碑评分。';
+    : '星球大小代表票房占比，高度和光晕呼应口碑评分。');
   document.getElementById('detail-overlay').style.display = 'none';
   document.getElementById('detail-card').style.transform = 'scale(.94)';
   window.setTimeout(() => {
@@ -910,8 +946,8 @@ function showDetail(idx) {
   if (b.crown) b.crown.visible = false;
 }
 
-function pill(text, color) {
-  return `<span style="background:${color}22;color:${color};padding:2px 9px;border-radius:4px;font-size:12px;font-weight:600">${text}</span>`;
+function pill(text, color, textColor = color) {
+  return `<span style="background:${color}22;color:${textColor};padding:2px 9px;border-radius:4px;font-size:12px;font-weight:600">${text}</span>`;
 }
 
 function restoreBubble(b) {
@@ -986,6 +1022,7 @@ function processGestures() {
   if (handStatus) handStatus.textContent = hands.length > 1 ? '双手' : hands.length === 1 ? '单手' : '未识别';
   if (!gestureMode || hands.length === 0) {
     lastPinch = false;
+    pinchFrames = 0;
     prevPos = null;
     prevHandDistance = null;
     return;
@@ -994,6 +1031,7 @@ function processGestures() {
   const detailOpen = document.getElementById('detail-overlay').style.display === 'flex';
   if (detailOpen) {
     lastPinch = false;
+    pinchFrames = 0;
     prevPos = null;
     prevHandDistance = null;
     checkWave(hands[0]);
@@ -1012,7 +1050,7 @@ function processGestures() {
 function handState(hand) {
   const lm = hand.landmarks;
   const pinch = Math.hypot(lm[4].x - lm[8].x, lm[4].y - lm[8].y);
-  if (pinch < 0.065) return 'pinch';
+  if (pinch < 0.038) return 'pinch';
   return 'open';
 }
 
@@ -1020,15 +1058,17 @@ function processOneHand(hand) {
   const state = handState(hand);
   const lm = hand.landmarks;
   if (state === 'pinch') {
-    if (!lastPinch) {
+    pinchFrames += 1;
+    if (!lastPinch && pinchFrames >= 2) {
       const mx = (lm[4].x + lm[8].x) / 2;
       const my = (lm[4].y + lm[8].y) / 2;
       pickAt((1 - mx) * window.innerWidth, my * window.innerHeight);
+      lastPinch = true;
     }
-    lastPinch = true;
     return;
   }
 
+  pinchFrames = 0;
   lastPinch = false;
   prevPos = null;
   prevHandDistance = null;
@@ -1042,8 +1082,8 @@ function processTwoHands(hands) {
   const ay = (h0.y + h1.y) / 2;
   const distance = Math.hypot(h0.x - h1.x, h0.y - h1.y);
   if (prevPos) {
-    oT += (ax - prevPos.x) * 2.1;
-    oP -= (ay - prevPos.y) * 1.8;
+    oT += (ax - prevPos.x) * 2.8;
+    oP -= (ay - prevPos.y) * 2.35;
     oP = Math.max(-1.15, Math.min(1.15, oP));
   }
   if (prevHandDistance != null) {
@@ -1055,14 +1095,32 @@ function processTwoHands(hands) {
 }
 
 function checkWave(hand) {
-  const x = 1 - hand.landmarks[9].x;
+  const lm = hand.landmarks || [];
+  const points = [0, 5, 9, 13, 17].map((idx) => lm[idx]).filter(Boolean);
+  if (!points.length) return;
+  const x = 1 - points.reduce((sum, p) => sum + p.x, 0) / points.length;
+  const y = points.reduce((sum, p) => sum + p.y, 0) / points.length;
   const now = performance.now();
-  waveSamples.push({ x, t: now });
-  while (waveSamples.length && waveSamples[0].t < now - 900) waveSamples.shift();
-  if (waveSamples.length < 8) return;
+  waveSamples.push({ x, y, t: now });
+  while (waveSamples.length && waveSamples[0].t < now - 1050) waveSamples.shift();
+  if (waveSamples.length < 6) return;
   let travel = 0;
-  for (let i = 1; i < waveSamples.length; i++) travel += Math.abs(waveSamples[i].x - waveSamples[i - 1].x);
-  if (travel > 0.22 && Math.abs(waveSamples.at(-1).x - waveSamples[0].x) < travel * 0.55) {
+  let vertical = 0;
+  let turns = 0;
+  let lastDir = 0;
+  for (let i = 1; i < waveSamples.length; i++) {
+    const dx = waveSamples[i].x - waveSamples[i - 1].x;
+    const dy = waveSamples[i].y - waveSamples[i - 1].y;
+    travel += Math.abs(dx);
+    vertical += Math.abs(dy);
+    const dir = Math.sign(dx);
+    if (dir && lastDir && dir !== lastDir) turns += 1;
+    if (dir) lastDir = dir;
+  }
+  const net = Math.abs(waveSamples.at(-1).x - waveSamples[0].x);
+  const horizontalEnough = travel > 0.16 && travel > vertical * 1.25;
+  const backAndForth = turns >= 1 || net < travel * 0.72;
+  if (horizontalEnough && backAndForth) {
     if (document.getElementById('gesture-help')) closeGestureHelp();
     else closeDetail();
     waveSamples = [];
@@ -1104,8 +1162,23 @@ function handleBubbleWheel(event) {
   controlsRef.update();
 }
 
+
+function isPickBlockedByOverlay() {
+  const entryHint = document.getElementById('bubble-entry-hint');
+  const rules = document.getElementById('bubble-rules');
+  const gestureHelp = document.getElementById('gesture-help');
+  const detail = document.getElementById('detail-overlay');
+  const rulesOpen = rules && rules.style.display !== 'none';
+  const detailOpen = detail && detail.style.display === 'flex';
+  return !!entryHint || !!gestureHelp || !!rulesOpen || !!detailOpen;
+}
+
 function pickAt(clientX, clientY) {
   if (!cameraRef) return;
+  if (isPickBlockedByOverlay()) {
+    registerBlankHintClick();
+    return;
+  }
   const rect = rendererRef?.domElement?.getBoundingClientRect?.() || { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
   if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) {
     registerBlankHintClick();
@@ -1154,15 +1227,21 @@ function init(scene, camera, controls, renderer) {
   const posterTop = document.getElementById('poster-top');
   if (posterTop) {
     posterTop.dataset.originalHTML = posterTop.innerHTML;
-    posterTop.innerHTML = [
-      '<div style="font-size:13px;font-weight:700;color:#7a3b12;letter-spacing:3px">电影星海</div>',
-      '<div style="font-size:10px;color:rgba(24,18,11,.52);margin-top:4px;letter-spacing:1px">年份色谱 · 类型星座 · TOP5 光环</div>',
-    ].join('');
+    const setText = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
+    setText('poster-chapter', '🌌 ACT 05 · 下一帧');
+    setText('poster-title', '下一帧 · 进入影像宇宙');
+    setText('poster-sub', '这里不再是统计，而是影像的集合。\n每一帧数据，都来自一部真实的电影。\n你正在进入被时间筛选后的视觉记忆。');
+    setText('poster-stat', '604 帧记忆影像');
+    setText('poster-stat-label', '');
+    setText('poster-desc', '');
   }
   const quote = document.getElementById('chapter-quote');
   if (quote) {
     quote.dataset.originalHTML = quote.innerHTML;
-    quote.innerHTML = '每一颗星都是一部电影，<span>每一次靠近都是一次重新观看。</span>';
+    quote.innerHTML = '每一帧影像都在继续播放，<span>每一次观看，都在重新发生。</span>';
   }
 
   const legend = document.getElementById('legend');
@@ -1176,7 +1255,7 @@ function init(scene, camera, controls, renderer) {
 
   if (clickHandler) document.removeEventListener('click', clickHandler);
   clickHandler = (event) => {
-    if (event.target.closest?.('#bubble-ui') || event.target.closest?.('#detail-card')) return;
+    if (event.target.closest?.('#bubble-ui') || event.target.closest?.('#detail-card') || event.target.closest?.('#detail-overlay')) return;
     pickAt(event.clientX, event.clientY);
   };
   document.addEventListener('click', clickHandler);
@@ -1185,7 +1264,10 @@ function init(scene, camera, controls, renderer) {
 
   document.getElementById('detail-close')?.addEventListener('click', closeDetail);
   document.getElementById('detail-overlay')?.addEventListener('click', (event) => {
-    if (event.target.id === 'detail-overlay') closeDetail();
+    if (event.target.id === 'detail-overlay') {
+      event.stopPropagation();
+      closeDetail();
+    }
   });
 }
 
@@ -1244,6 +1326,7 @@ function destroy() {
   poppedIdx = null;
   rendererRef = null;
   handData = { hands: [], ts: 0 };
+  pinchFrames = 0;
   gestureMode = false;
   prevPos = null;
   prevHandDistance = null;
